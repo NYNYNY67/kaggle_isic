@@ -1,0 +1,2 @@
+cv_mode: "sgkf"
+n_splits: 5

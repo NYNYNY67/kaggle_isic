@@ -1,0 +1,77 @@
+hydra:
+  job:
+    name: lgb
+  run:
+    dir: data/outputs/${hydra.job.name}
+  sweep:
+    dir: data/outputs/${hydra.job.name}/sweep_${now:%Y%m%d_%H%M%S}
+    subdir: conf_${hydra.job.id}
+
+defaults:
+  - cross_validation.yaml
+  - _self_
+
+num_cols:
+  - 'age_approx'
+  - 'clin_size_long_diam_mm'
+  - 'tbp_lv_A'
+  - 'tbp_lv_Aext'
+  - 'tbp_lv_B'
+  - 'tbp_lv_Bext'
+  - 'tbp_lv_C'
+  - 'tbp_lv_Cext'
+  - 'tbp_lv_H'
+  - 'tbp_lv_Hext'
+  - 'tbp_lv_L'
+  - 'tbp_lv_Lext'
+  - 'tbp_lv_areaMM2'
+  - 'tbp_lv_area_perim_ratio'
+  - 'tbp_lv_color_std_mean'
+  - 'tbp_lv_deltaA'
+  - 'tbp_lv_deltaB'
+  - 'tbp_lv_deltaL'
+  - 'tbp_lv_deltaLB'
+  - 'tbp_lv_deltaLBnorm'
+  - 'tbp_lv_eccentricity'
+  - 'tbp_lv_minorAxisMM'
+  - 'tbp_lv_nevi_confidence'
+  - 'tbp_lv_norm_border'
+  - 'tbp_lv_norm_color'
+  - 'tbp_lv_perimeterMM'
+  - 'tbp_lv_radial_color_std_max'
+  - 'tbp_lv_stdL'
+  - 'tbp_lv_stdLExt'
+  - 'tbp_lv_symm_2axis'
+  - 'tbp_lv_symm_2axis_angle'
+  - 'tbp_lv_x'
+  - 'tbp_lv_y'
+  - 'tbp_lv_z'
+cat_cols:
+  - "sex"
+  # - "anatom_site_general"
+  - "tbp_tile_type"
+  - "tbp_lv_location"
+  - "tbp_lv_location_simple"
+
+lgb_params:
+  params:
+    objective : binary
+    random_state: 42
+    metric: auc
+    verbosity: -1
+
+    learning_rate: 0.005
+    max_depth: 4
+#    lambda_l1: 2.4
+#    lambda_l2: 0.0026
+#    num_leaves: 131
+#    feature_fraction: 0.665
+#    pos_bagging_fraction: 0.60
+#    neg_bagging_fraction: 0.65
+#    bagging_freq: 5
+#    min_child_samples: 79
+
+    # boosting: dart
+
+    early_stopping_rounds: 100
+  num_boost_round: 3000
