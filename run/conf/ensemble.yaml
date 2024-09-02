@@ -1,0 +1,23 @@
+hydra:
+  job:
+    name: ensemble
+  run:
+    dir: data/outputs/${hydra.job.name}
+  sweep:
+    dir: data/outputs/${hydra.job.name}/sweep_${now:%Y%m%d_%H%M%S}
+    subdir: conf_${hydra.job.id}
+
+defaults:
+  - cross_validation.yaml
+  - _self_
+
+members:
+  lgb_plain:
+    path: data/outputs/lgb_plain/preds.parquet
+    weight: 3
+  convnext_nes:
+    path: data/outputs/image_convnext_nes/preds.parquet
+    weight: 1
+  eva_nes:
+    path: data/outputs/image_eva_nes/preds.parquet
+    weight: 1

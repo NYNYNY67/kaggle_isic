@@ -11,6 +11,12 @@ defaults:
   - cross_validation.yaml
   - _self_
 
+meta_features: #{}
+  convnext_nes:
+    path: data/outputs/image_convnext_nes/preds.parquet
+    join_keys:
+      - isic_id
+
 num_cols:
   - 'age_approx'
   - 'clin_size_long_diam_mm'
@@ -51,7 +57,7 @@ cat_cols:
   # - "anatom_site_general"
   - "tbp_tile_type"
   - "tbp_lv_location"
-  - "tbp_lv_location_simple"
+  # - "tbp_lv_location_simple"
 
 lgb_params:
   params:
@@ -73,5 +79,22 @@ lgb_params:
 
     # boosting: dart
 
-    early_stopping_rounds: 100
   num_boost_round: 3000
+
+early_stopping_rounds: 100
+
+groupings:
+  -
+    - patient_id
+  -
+    - patient_id
+    - tbp_lv_location
+  -
+    - attribution
+  -
+    - attribution
+    - tbp_lv_location
+
+aggs:
+  - mean
+  - std
