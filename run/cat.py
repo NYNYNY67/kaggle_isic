@@ -9,11 +9,11 @@ import pandas as pd
 
 from src.cross_validation import cross_validation
 from src.feature_engineer import FeatureEngineer
-from src.train_lgb import train_lgb
+from src.train_cat import train_cat
 from src.comp_score import comp_score
 
 
-@hydra.main(version_base=None, config_path="conf", config_name="lgb")
+@hydra.main(version_base=None, config_path="conf", config_name="cat")
 def main(cfg: DictConfig):
     data_dir = pathlib.Path(__file__).resolve().parent.parent / "data"
     out_dir = pathlib.Path(HydraConfig.get().runtime.output_dir)
@@ -46,9 +46,9 @@ def main(cfg: DictConfig):
         df_metadata=df_train,
         num_cols=OmegaConf.to_container(cfg.num_cols),
         cat_cols=OmegaConf.to_container(cfg.cat_cols),
-        categorical_encoder=None,
         groupings=OmegaConf.to_container(cfg.groupings),
         aggs=OmegaConf.to_container(cfg.aggs),
+        categorical_encoder=None,
     )
     fe.main()
 
@@ -62,35 +62,25 @@ def main(cfg: DictConfig):
         pickle.dump(fe.categorical_encoder, f)
 
     df_train = fe.df_metadata
-    cat_cols = fe.cat_cols
     num_cols = fe.num_cols + meta_feature_cols
+    cat_cols = fe.cat_cols
+    train_cols = num_cols + cat_cols
 
-    # for col in cat_cols + num_cols:
-    #     print(col)
-    #     print(df_train[col].nunique())
-    # print(df_train["color_uniformity"].describe())
-    # print(df_train["attribution_color_uniformity_normalize"].describe())
-    # print(df_train["attribution_color_uniformity_mean"].describe())
-    # print(df_train["attribution_color_uniformity_std"].describe())
-    # exit()
-    #
-
-    print(f"n features: {len(cat_cols) + len(num_cols)}")
+    print(f"n_features: {len(train_cols)}")
 
     list_df_preds = []
     scores = []
     models = []
     for fold in range(cfg.n_splits):
-        df_train_fold = df_train[df_train["fold"] != fold].reset_index(drop=True).copy()
-        df_valid_fold = df_train[df_train["fold"] == fold].reset_index(drop=True).copy()
+        df_train_fold = df_train[df_train["fold"] != fold].reset_index(drop=True)
+        df_valid_fold = df_train[df_train["fold"] == fold].reset_index(drop=True)
 
-        model, preds = train_lgb(
+        model, preds = train_cat(
             df_train=df_train_fold,
             df_valid=df_valid_fold,
-            lgb_params=OmegaConf.to_container(cfg.lgb_params),
-            cat_cols=cat_cols,
+            cat_params=OmegaConf.to_container(cfg.cat_params),
             num_cols=num_cols,
-            early_stopping_rounds=cfg.early_stopping_rounds,
+            cat_cols=cat_cols,
         )
         score = comp_score(df_valid_fold["target"], pd.DataFrame(preds, columns=["prediction"]), "")
         scores.append(score)
@@ -100,26 +90,13 @@ def main(cfg: DictConfig):
         df_preds["pred"] = preds
         list_df_preds.append(df_preds)
 
-        model.save_model(out_dir / f"lgb_{fold}.json")
+        model.save_model(out_dir / f"cat_{fold}.json")
         models.append(model)
 
     print(f"over all score: {np.mean(scores)}")
 
-    importance = np.mean([model.feature_importance() for model in models], 0)
-    df_importance = pd.DataFrame(
-        {
-            "feature": models[0].feature_name(),
-            "importance": importance,
-        }
-    ).sort_values("importance", ascending=False).reset_index(drop=True)
-    df_importance.to_csv(out_dir / "importance.csv")
-
     df_preds = pd.concat(list_df_preds)
     df_preds.to_parquet(out_dir / "preds.parquet")
-
-    df = df_preds.merge(df_train[["isic_id", "target"]], on="isic_id")
-    score = comp_score(df["target"], pd.DataFrame(df["pred"].values, columns=["predinction"]), "")
-    print(f"cocnat score: {score}")
 
 
 if __name__ == "__main__":

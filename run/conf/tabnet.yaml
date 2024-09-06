@@ -1,6 +1,6 @@
 hydra:
   job:
-    name: lgb
+    name: tabnet
   run:
     dir: data/outputs/${hydra.job.name}
   sweep:
@@ -10,16 +10,6 @@ hydra:
 defaults:
   - cross_validation.yaml
   - _self_
-
-meta_features: {}
-#  convnext_nes:
-#    path: data/outputs/image_convnext_nes/preds.parquet
-#    join_keys:
-#      - isic_id
-#  eva_nes:
-#    path: data/outputs/image_eva_nes/preds.parquet
-#    join_keys:
-#      - isic_id
 
 num_cols:
   - 'age_approx'
@@ -58,35 +48,9 @@ num_cols:
   - 'tbp_lv_z'
 cat_cols:
   - "sex"
-  # - "anatom_site_general"
   - "tbp_tile_type"
   - "tbp_lv_location"
-  # - "tbp_lv_location_simple"
-
-lgb_params:
-  params:
-    objective : binary
-    random_state: 42
-    metric: auc
-    verbosity: -1
-
-    learning_rate: 0.005
-    max_depth: 4
-#   is_unbalance: true
-#    lambda_l1: 2.4
-#    lambda_l2: 3
-#    num_leaves: 131
-#    feature_fraction: 0.8
-#    pos_bagging_fraction: 0.60
-#    neg_bagging_fraction: 0.65
-#    bagging_freq: 5
-#    min_child_samples: 79
-
-    # boosting: dart
-
-  num_boost_round: 3000
-
-early_stopping_rounds: 100
+  - "tbp_lv_location_simple"
 
 groupings:
   -
@@ -103,4 +67,3 @@ groupings:
 aggs:
   - mean
   - std
-#  - null_rate

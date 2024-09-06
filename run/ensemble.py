@@ -62,11 +62,12 @@ def main(cfg: DictConfig):
 
         results.append(fold_result)
     results.append(list(np.mean(results, axis=0)))
+    results.append([members[key]["weight"] for key in members.keys()])
 
     df_result = pd.DataFrame(
         results,
         columns=list(members.keys()) + ["ensemble_average"],
-        index=[f"fold_{i}" for i in range(cfg.n_splits)] + ["mean"]
+        index=[f"fold_{i}" for i in range(cfg.n_splits)] + ["mean"] + ["weight"]
     )
     print(df_result)
 

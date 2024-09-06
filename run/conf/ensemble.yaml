@@ -12,12 +12,54 @@ defaults:
   - _self_
 
 members:
-  lgb_plain:
-    path: data/outputs/lgb_plain/preds.parquet
-    weight: 3
-  convnext_nes:
-    path: data/outputs/image_convnext_nes/preds.parquet
+  lgb:
+    path: data/outputs/lgb/preds.parquet
     weight: 1
-  eva_nes:
-    path: data/outputs/image_eva_nes/preds.parquet
+#  lgb_plain:
+#    path: data/outputs/lgb_plain/preds.parquet
+#    weight: 1
+#  lgb_no_att:
+#    path: data/outputs/lgb_no_att/preds.parquet
+#    weight: 6
+#  cat_plain:
+#    path: data/outputs/cat_plain/preds.parquet
+#    weight: 2
+#  convnext_nes:
+#    path: data/outputs/image_convnext_nes/preds.parquet
+#    weight: 1
+#  eva_nes:
+#    path: data/outputs/image_eva_nes/preds.parquet
+#    weight: 1
+#  sub_71:
+#    path: data/sub_71/preds.parquet
+#    weight: 1
+#  sub_73:
+#    path: data/sub_73/preds.parquet
+#    weight: 1
+#  sub_75:
+#    path: data/sub_75/preds.parquet
+#    weight: 1
+#  sub_77:
+#    path: data/sub_77/preds.parquet
+#    weight: 1
+#  sub_71:
+#    path: data/outputs/sub_71/preds.parquet
+#    weight: 2
+#  swin:
+#    path: data/outputs/image_swin/preds.parquet
+#    weight: 1
+#  efficientnet:
+#    path: data/outputs/image_efficientnet/preds.parquet
+#    weight: 1
+#  tabnet:
+#    path: data/outputs/best_tabnet/preds.parquet
+#    weight: 1
+  kanna:
+    path: data/kanna/preds.parquet
+    weight: 1
+  fyk_xgb:
+    path: data/fyk/pred_xgb_exp99.parquet
+    weight: 1
+  fyk_lgb:
+    path: data/fyk/pred_lgb_exp99.parquet
     weight: 1

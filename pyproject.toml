@@ -24,6 +24,8 @@ catboost = "^1.2.5"
 pytorch-tabnet = "^4.1.0"
 optuna = "^3.6.1"
 kaggle = "^1.6.17"
+numpy = "1.26.4"
+scipy = "^1.14.1"
 
 
 [build-system]

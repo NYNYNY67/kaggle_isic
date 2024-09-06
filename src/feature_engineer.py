@@ -5,7 +5,7 @@ from sklearn.preprocessing import OrdinalEncoder
 
 def handmade_features(df_metadata):
     df = df_metadata.copy()
-    df["lesion_size_ratio"] = df["tbp_lv_minorAxisMM"] / df["clin_size_long_diam_mm"]
+    df["lesion_size_ratio"] = df["tbp_lv_minorAxisMM"] / (df["clin_size_long_diam_mm"])
     # df["lesion_shape_index"] = df["tbp_lv_areaMM2"] / (df["tbp_lv_perimeterMM"] ** 2)
     df["hue_contrast"] = (df["tbp_lv_H"] - df["tbp_lv_Hext"]).abs()
     # df["luminance_contrast"] = (df["tbp_lv_L"] - df["tbp_lv_Lext"]).abs()
@@ -13,13 +13,13 @@ def handmade_features(df_metadata):
         df["tbp_lv_deltaA"] ** 2 + df["tbp_lv_deltaB"] ** 2 + df["tbp_lv_deltaL"] ** 2
     )
     # df["border_complexity"] = df["tbp_lv_norm_border"] + df["tbp_lv_symm_2axis"]
-    df["color_uniformity"] = df["tbp_lv_color_std_mean"] / df["tbp_lv_radial_color_std_max"]
+    df["color_uniformity"] = df["tbp_lv_color_std_mean"] / (df["tbp_lv_radial_color_std_max"])
     df["3d_position_distance"] = np.sqrt(df["tbp_lv_x"] ** 2 + df["tbp_lv_y"] ** 2 + df["tbp_lv_z"] ** 2)
-    df["perimeter_to_area_ratio"] = df["tbp_lv_perimeterMM"] / df["tbp_lv_areaMM2"]
+    df["perimeter_to_area_ratio"] = df["tbp_lv_perimeterMM"] / (df["tbp_lv_areaMM2"])
     df["lesion_visibility_score"] = df["tbp_lv_deltaLBnorm"] + df["tbp_lv_norm_color"]
     # df["combined_anatomical_site"] = df["anatom_site_general"] + "_" + df["tbp_lv_location"]
     #df["symmetry_border_consistency"] = df["tbp_lv_symm_2axis"] * df["tbp_lv_norm_border"]
-    df["color_consistency"] = df["tbp_lv_stdL"] / df["tbp_lv_Lext"]
+    df["color_consistency"] = df["tbp_lv_stdL"] / (df["tbp_lv_Lext"])
 
     df["size_age_interaction"] = df["clin_size_long_diam_mm"] * df["age_approx"]
     # df["hue_color_std_interaction"] = df["tbp_lv_H"] * df["tbp_lv_color_std_mean"]
@@ -29,7 +29,7 @@ def handmade_features(df_metadata):
     df["color_contrast_index"] = df["tbp_lv_deltaA"] + df["tbp_lv_deltaB"] + df["tbp_lv_deltaL"] + df[
         "tbp_lv_deltaLBnorm"]
     # df["log_lesion_area"] = np.log(df["tbp_lv_areaMM2"] + 1)
-    df["normalized_lesion_size"] = df["clin_size_long_diam_mm"] / df["age_approx"]
+    df["normalized_lesion_size"] = df["clin_size_long_diam_mm"] / (df["age_approx"])
     df["mean_hue_difference"] = (df["tbp_lv_H"] + df["tbp_lv_Hext"]) / 2
     # df["std_dev_contrast"] = np.sqrt(
     #     (df["tbp_lv_deltaA"] ** 2 + df["tbp_lv_deltaB"] ** 2 + df["tbp_lv_deltaL"] ** 2) / 3)
@@ -186,7 +186,7 @@ class FeatureEngineer:
                     agg=agg,
                     agg_cols=self.num_cols,
                 )
-                if grouping not in [["attribution"]]:
+                if grouping not in [["attribution"]]: #, ["attribution", "tbp_lv_location"]]:
                     new_num_cols += new_cols
 
             new_cols = self.grouping_normalize(
