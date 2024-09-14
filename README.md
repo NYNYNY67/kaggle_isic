@@ -1,5 +1,7 @@
 # 5th Place Winning Solution - ISIC 2024 - Skin Cancer Detection with 3D-TBP
 This is the repository of part of 5th winning solution of "ISIC 2024 - Skin Cancer Detection with 3D-TBP" in kaggle.
+https://www.kaggle.com/competitions/isic-2024-challenge/discussion/533056
+
 ![solution](https://www.googleapis.com/download/storage/v1/b/kaggle-forum-message-attachments/o/inbox%2F3948967%2F38ce6eb11d8320552850efd2a20a1d87%2Fimage1.png?generation=1725877390031631&alt=media)
 
 This repository contains these two models in the pipeline above. 
