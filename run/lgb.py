@@ -61,7 +61,7 @@ def main(cfg: DictConfig):
     with open(out_dir / "categorical_encoder.pickle", mode="wb") as f:
         pickle.dump(fe.categorical_encoder, f)
 
-    df_train = fe.df_metadata
+
     cat_cols = fe.cat_cols
     num_cols = fe.num_cols + meta_feature_cols
 

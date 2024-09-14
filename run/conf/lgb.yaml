@@ -86,7 +86,7 @@ lgb_params:
 
   num_boost_round: 3000
 
-early_stopping_rounds: 100
+early_stopping_rounds: 200
 
 groupings:
   -

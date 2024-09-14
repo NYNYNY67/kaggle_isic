@@ -178,7 +178,8 @@ class FeatureEngineer:
         for grouping in self.groupings:
 
             column_name = self.grouping_cnt(grouping)
-            new_num_cols.append(column_name)
+            if grouping not in [["attribution"]]:  # , ["attribution", "tbp_lv_location"]]:
+                new_num_cols.append(column_name)
 
             for agg in self.aggs:
                 new_cols = self.grouping_agg(

@@ -26,25 +26,22 @@ members:
 #    weight: 2
 #  convnext_nes:
 #    path: data/outputs/image_convnext_nes/preds.parquet
-#    weight: 1
+#    weight: 0.2
 #  eva_nes:
 #    path: data/outputs/image_eva_nes/preds.parquet
-#    weight: 1
+#    weight: 0.2
 #  sub_71:
 #    path: data/sub_71/preds.parquet
 #    weight: 1
 #  sub_73:
 #    path: data/sub_73/preds.parquet
-#    weight: 1
+#    weight: 0.1
 #  sub_75:
 #    path: data/sub_75/preds.parquet
-#    weight: 1
+#    weight: 0.1
 #  sub_77:
 #    path: data/sub_77/preds.parquet
-#    weight: 1
-#  sub_71:
-#    path: data/outputs/sub_71/preds.parquet
-#    weight: 2
+#    weight: 0.1
 #  swin:
 #    path: data/outputs/image_swin/preds.parquet
 #    weight: 1
